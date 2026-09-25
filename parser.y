@@ -16,13 +16,14 @@ ASTNode *ast_root = NULL;
 }
 
 %token TOKEN_VAR
+%token TOKEN_CONST
 %token <str_val> TOKEN_TYPE
 %token <str_val> TOKEN_IDENTIFIER
 %token <str_val> TOKEN_STRING_LITERAL
 %token <int_val> TOKEN_INT_LITERAL
 
 //any of these non-terminal rules produce a result
-%type <node> program statement_list statement var_declaration expression
+%type <node> program statement_list statement var_declaration const_declaration expression
 
 %%
 
@@ -51,6 +52,9 @@ statement:
     var_declaration ';' {
         $$ = $1;
     }
+    | const_declaration ';' {
+        $$ = $1;
+    }
     ;
 
 var_declaration:
@@ -64,6 +68,15 @@ var_declaration:
         free($3);
         free($4);
 
+    }
+    ;
+
+const_declaration:
+    TOKEN_CONST ':' TOKEN_TYPE TOKEN_IDENTIFIER '=' expression {
+        $$ = create_var_decl($3, $4, $6);
+        $$->varDeclaration.isConst = 1;
+        free($3);
+        free($4);
     }
     ;
 
@@ -82,5 +95,3 @@ expression:
 void yyerror(const char *s) {
     fprintf(stderr, "Parse error: %s\n", s);
 }
-
-
