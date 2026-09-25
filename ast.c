@@ -40,6 +40,7 @@ ASTNode *create_var_decl(char *dtype, const char *name, ASTNode *init) {
   node->varDeclaration.dataType = strdup(dtype);
   node->varDeclaration.identifier = strdup(name);
   node->varDeclaration.init = init;
+  node->varDeclaration.isConst = 0;
   node->next = NULL;
   return node;
 }
@@ -47,7 +48,11 @@ ASTNode *create_var_decl(char *dtype, const char *name, ASTNode *init) {
 void print_ast(ASTNode *node) {
   while (node != NULL) {
     if (node->type == VAR_DECL) {
-      printf("VariableDeclaration:\n");
+      if (node->varDeclaration.isConst) {
+        printf("ConstantDeclaration:\n");
+      } else {
+        printf("VariableDeclaration:\n");
+      }
       printf("  Type: %s\n", node->varDeclaration.dataType);
       printf("  Identifier: %s\n", node->varDeclaration.identifier);
       if (node->varDeclaration.init) {
