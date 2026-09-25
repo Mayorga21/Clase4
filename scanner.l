@@ -12,9 +12,14 @@
 [ \t\r\n]+             ; /* Skip whitespace */
 
 "var"                  { return TOKEN_VAR; }
+"const"                { return TOKEN_CONST; }
 "int"                  { yylval.str_val = strdup(yytext); return TOKEN_TYPE; }
 "char"                 { yylval.str_val = strdup(yytext); return TOKEN_TYPE; }
+"bool"                 { yylval.str_val = strdup(yytext); return TOKEN_TYPE; }
 "str"                  { yylval.str_val = strdup(yytext); return TOKEN_TYPE; }
+
+"true"                 { yylval.int_val = 1; return TOKEN_INT_LITERAL; }
+"false"                { yylval.int_val = 0; return TOKEN_INT_LITERAL; }
 
 ":"                    { return ':'; }
 "="                    { return '='; }
