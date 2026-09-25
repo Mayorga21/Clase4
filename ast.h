@@ -11,6 +11,7 @@ typedef struct VarDeclaration {
   char *dataType;
   char *identifier;
   struct ASTNode *init;
+  int isConst
 } VarDeclaration;
 
 typedef struct ASTNode {
